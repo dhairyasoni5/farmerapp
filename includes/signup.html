@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Login & Registration Form</title>
-  <!---Custom CSS File--->
   <link rel="stylesheet" href="signup.css">
 </head>
 <body>
@@ -15,14 +14,16 @@
     <div class="login form">
       <header>Login</header>
       <form action="login.php" method="POST">
-        <input type="email" name="email" placeholder="Enter your email" required>
-        <input type="password" name="password" placeholder="Enter your password" required>
+        <label for="login-email">Email</label>
+        <input type="email" id="login-email" name="email" placeholder="Enter your email" required>
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" name="password" placeholder="Enter your password" required>
         <a href="#">Forgot password?</a>
         <input type="submit" class="button" value="Login">
       </form>
       <div class="signup">
         <span class="signup">Don't have an account?
-         <label for="check">Signup</label>
+          <label for="check">Signup</label>
         </span>
       </div>
     </div>
@@ -30,14 +31,51 @@
     <div class="registration form">
       <header>Signup</header>
       <form action="signup.php" method="POST">
-        <input type="email" name="email" placeholder="Enter your email" required>
-        <input type="password" name="password" placeholder="Create a password" required>
-        <input type="password" name="confirm_password" placeholder="Confirm your password" required>
+        <label for="signup-email">Email</label>
+        <input type="email" id="signup-email" name="email" placeholder="Enter your email" required>
+        
+        <label for="signup-password">Password</label>
+        <input type="password" id="signup-password" name="password" placeholder="Create a password" required>
+        
+        <label for="confirm-password">Confirm Password</label>
+        <input type="password" id="confirm-password" name="confirm_password" placeholder="Confirm your password" required>
+        
+        <label for="user-type">Type</label>
+        <select id="user-type" name="type" required>
+          <option value="farmer">Farmer</option>
+          <option value="distributor">Distributor</option>
+        </select>
+        
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" placeholder="Enter your name" required>
+        
+        <label for="age">Age</label>
+        <input type="number" id="age" name="age" placeholder="Enter your age" required>
+        
+        <label for="gender">Gender</label>
+        <select id="gender" name="gender" required>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+        
+        <label for="state">State</label>
+        <input type="text" id="state" name="state" placeholder="Enter your state" required>
+        
+        <label for="district">District</label>
+        <input type="text" id="district" name="district" placeholder="Enter your district" required>
+        
+        <label for="village">Village</label>
+        <input type="text" id="village" name="village" placeholder="Enter your village" required>
+        
+        <label for="contact-number">Contact Number</label>
+        <input type="tel" id="contact-number" name="contact_number" placeholder="Enter your contact number" required>
+        
         <input type="submit" class="button" value="Signup">
       </form>
       <div class="signup">
         <span class="signup">Already have an account?
-         <label for="check">Login</label>
+          <label for="check">Login</label>
         </span>
       </div>
     </div>

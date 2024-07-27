@@ -30,7 +30,7 @@
         <div class="me-icon">
             <img class="dp" src="icons/profile-1336-svgrepo-com.svg" alt="Profile">
             <label style="opacity: 0.6; font-family: bold;">
-                <a href="profile.php">Me</a>
+                <a href="profile2.html">Me</a>
                 <i class="fa fa-sort-desc"></i>
             </label>
         </div>
