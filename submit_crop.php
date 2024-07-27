@@ -12,8 +12,29 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Fetch crop listings from the database
-$sql = "SELECT crop_type, crop_name, quantity, price, harvest_date, description, image_path FROM crops";
+// Initialize filter and sort variables
+$crop_name_filter = isset($_GET['crop_name']) ? $_GET['crop_name'] : '';
+$price_sort = isset($_GET['price_sort']) ? $_GET['price_sort'] : '';
+
+// Fetch crop names for the filter dropdown
+$crop_names_sql = "SELECT DISTINCT crop_name FROM crops";
+$crop_names_result = $conn->query($crop_names_sql);
+
+// Build the main query with filters and sorting
+$sql = "SELECT crop_type, crop_name, quantity, price, harvest_date, description, image_path, contact_no FROM crops WHERE 1=1";
+
+// Apply crop name filter
+if ($crop_name_filter != '') {
+    $sql .= " AND crop_name = '" . $conn->real_escape_string($crop_name_filter) . "'";
+}
+
+// Apply price sorting
+if ($price_sort == 'low_high') {
+    $sql .= " ORDER BY price ASC";
+} elseif ($price_sort == 'high_low') {
+    $sql .= " ORDER BY price DESC";
+}
+
 $result = $conn->query($sql);
 ?>
 
@@ -113,7 +134,7 @@ $result = $conn->query($sql);
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="index.php">Home</a>
+                    <a class="nav-link" href="trial.php">Home</a>
                 </li>
             </ul>
         </div>
@@ -122,6 +143,41 @@ $result = $conn->query($sql);
         <div class="section-heading text-center">
             <h1 class="mb-4">Available Crops for Sale</h1>
         </div>
+        <!-- Filter and Sort Form -->
+        <form class="mb-4" method="GET" action="">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="crop_name">Filter by Crop Name</label>
+                        <select class="form-control" id="crop_name" name="crop_name">
+                            <option value="">All</option>
+                            <?php
+                            if ($crop_names_result->num_rows > 0) {
+                                while ($row = $crop_names_result->fetch_assoc()) {
+                                    $selected = ($row['crop_name'] == $crop_name_filter) ? 'selected' : '';
+                                    echo "<option value='" . htmlspecialchars($row['crop_name']) . "' $selected>" . htmlspecialchars($row['crop_name']) . "</option>";
+                                }
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="price_sort">Sort by Price</label>
+                        <select class="form-control" id="price_sort" name="price_sort">
+                            <option value="">None</option>
+                            <option value="low_high" <?php if ($price_sort == 'low_high') echo 'selected'; ?>>Low to High</option>
+                            <option value="high_low" <?php if ($price_sort == 'high_low') echo 'selected'; ?>>High to Low</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary">Apply</button>
+                </div>
+            </div>
+        </form>
+
         <div class="row">
             <?php
             if ($result->num_rows > 0) {
@@ -137,6 +193,7 @@ $result = $conn->query($sql);
                     echo "<p class='card-text'><strong>Price:</strong> $" . htmlspecialchars($row["price"]) . "</p>";
                     echo "<p class='card-text'><strong>Harvest Date:</strong> " . htmlspecialchars($row["harvest_date"]) . "</p>";
                     echo "<p class='card-text'><strong>Description:</strong> " . htmlspecialchars($row["description"]) . "</p>";
+                    echo "<p class='card-text'><strong>Contact No:</strong> " . htmlspecialchars($row["contact_no"]) . "</p>";
                     echo "</div>";
                     echo "</div>";
                     echo "</div>";
